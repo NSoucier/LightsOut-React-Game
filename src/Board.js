@@ -55,7 +55,6 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       const [y, x] = coord.split("-").map(Number);
       const flipCell = (y, x, boardCopy) => {
         // if this coord is actually on board, flip it
-
         if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
           boardCopy[y][x] = !boardCopy[y][x];
         }
@@ -66,10 +65,10 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
       // TODO: in the copy, flip this cell and the cells around it
       flipCell(y,x,copyOldBoard);
-      if (copyOldBoard[y][x-1] !== undefined) {flipCell(y,x-1,copyOldBoard)}
-      if (copyOldBoard[y][x+1] !== undefined) {flipCell(y,x+1,copyOldBoard)}
-      if (copyOldBoard[y-1] !== undefined) {flipCell(y-1,x,copyOldBoard)}
-      if (copyOldBoard[y+1] !== undefined) {flipCell(y+1,x,copyOldBoard)}
+      flipCell(y,x-1,copyOldBoard);
+      flipCell(y,x+1,copyOldBoard);
+      flipCell(y-1,x,copyOldBoard);
+      flipCell(y+1,x,copyOldBoard);
 
       // TODO: return the copy
       return copyOldBoard
@@ -85,16 +84,18 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   // make table board
   // TODO
   return (
-    <table>
-      {board.map((row, y) => (
-        <tr>
-          {row.map((cell, x) => 
-            <Cell 
-              flipCellsAroundMe={() => flipCellsAround(`${y}-${x}`)} 
-              isLit={cell} 
-              key={parseInt(`${y}${x}`)}/>)}
-        </tr>
-      ))}
+    <table className="Board">
+      <tbody>
+        {board.map((row, y) => (
+          <tr key={y}>
+            {row.map((cell, x) => 
+              <Cell 
+                flipCellsAroundMe={() => flipCellsAround(`${y}-${x}`)} 
+                isLit={cell} 
+                key={`${y}-${x}`}/>)}
+          </tr>
+        ))}
+      </tbody>  
     </table>
   )
 }
